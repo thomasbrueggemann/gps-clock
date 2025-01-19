@@ -11,6 +11,12 @@ SoftwareSerial ss(3, 2); // RX, TX
 int utcHour;
 int utcMinute;
 
+// Variables to store individual digits of UTC hour and minute
+int utcHourTens;
+int utcHourOnes;
+int utcMinuteTens;
+int utcMinuteOnes;
+
 // Define the hour offset
 int hourOffset = 1;
 
@@ -45,12 +51,33 @@ void loop() {
     // Add the hour offset and wrap around midnight
     utcHour = (utcHour + hourOffset) % 24;
 
+    // Split UTC hour and minute into individual digits
+    splitTimeDigits();
+
     // Print the UTC hour and minute
     Serial.print("Time: ");
     Serial.print(utcHour);
     Serial.print(":");
     Serial.println(utcMinute);
 
+    // Print the individual digits of UTC hour and minute
+    Serial.print("Hour Tens: ");
+    Serial.println(utcHourTens);
+    Serial.print("Hour Ones: ");
+    Serial.println(utcHourOnes);
+    Serial.print("Minute Tens: ");
+    Serial.println(utcMinuteTens);
+    Serial.print("Minute Ones: ");
+    Serial.println(utcMinuteOnes);
+
     delay(1000);
   }
+}
+
+// Function to split UTC hour and minute into individual digits
+void splitTimeDigits() {
+  utcHourTens = utcHour / 10;
+  utcHourOnes = utcHour % 10;
+  utcMinuteTens = utcMinute / 10;
+  utcMinuteOnes = utcMinute % 10;
 }
