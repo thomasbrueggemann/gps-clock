@@ -5,21 +5,21 @@
 TinyGPSPlus gps;
 
 // Create a SoftwareSerial object for GPS communication
-SoftwareSerial ss(4, 3); // RX, TX
+SoftwareSerial ss(3, 2); // RX, TX
 
 // Variables to store UTC hour and minute
 int utcHour;
 int utcMinute;
 
 // Define the hour offset
-int hourOffset = 2;
+int hourOffset = 1;
 
 void setup() {
   // Start the serial communication
   Serial.begin(9600);
   ss.begin(9600);
 
-  // Set pin 4 as input
+  // Set pin 3 as input
   pinMode(4, INPUT);
 }
 
@@ -37,16 +37,20 @@ void loop() {
 
     // Read digital pin 4, if it's high, add another hour to the hourOffset
     if (digitalRead(4) == HIGH) {
-      hourOffset++;
+      hourOffset = 2;
+    } else {
+      hourOffset = 1;
     }
 
     // Add the hour offset and wrap around midnight
     utcHour = (utcHour + hourOffset) % 24;
 
     // Print the UTC hour and minute
-    Serial.print("UTC Time: ");
+    Serial.print("Time: ");
     Serial.print(utcHour);
     Serial.print(":");
     Serial.println(utcMinute);
+
+    delay(1000);
   }
 }
